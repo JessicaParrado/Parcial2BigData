@@ -1,0 +1,65 @@
+{
+    "dev": {
+        "app_function": "app.handler",
+        "aws_region": "us-east-1",
+        "profile_name": "default",
+        "project_name": "lambda",
+        "runtime": "python3.8",
+        "s3_bucket": "bucketpunto2descarga",
+	"keep_warm": false,
+	"apigateway_enabled":false,		
+	
+    }
+
+	"dev": {
+        "app_function": "p2.handler",
+        "aws_region": "us-east-1",
+        "profile_name": "default",
+        "project_name": "lambdap2",
+        "runtime": "python3.8",
+        "s3_bucket": "bucketpunto2procesado",
+	"keep_warm": false,
+	"apigateway_enabled":false,
+	"events": [{
+            "function": "p2.handler",
+            "event_source": {
+                  "arn":  "arn:aws:s3:::bucketpunto2descarga",
+                  "events": [
+                    "s3:ObjectCreated:*"
+                  ]
+               }
+            }],	
+    }
+	
+	"dev": {
+        "app_function": "p2e.handler",
+        "aws_region": "us-east-1",
+        "profile_name": "default",
+        "project_name": "lambdap2e",
+        "runtime": "python3.8",
+        "s3_bucket": "bucketpunto2procesado",
+	"keep_warm": false,
+	"apigateway_enabled":false
+	 "Version": "2012-10-17",
+  	"Statement": [
+    	{
+      	"Sid": "Stmt1547414166585",
+      	"Action": [
+        	"athena:StartQueryExecution"
+      	],
+      	"Effect": "Allow",
+      	"Resource": "*"
+    	},
+    	{
+      	"Sid": "Stmt1547414166586",
+      	"Action": [
+        	"s3:*"
+      	],
+      	"Effect": "Allow",
+      	"Resource": "arn:aws:s3:::bucketpunto2procesado/*"
+    	} 
+  	]	
+    	}
+
+
+}
